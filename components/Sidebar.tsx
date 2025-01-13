@@ -1,10 +1,10 @@
 "use client";
 
 import React from "react";
-import Logo from "@/components/logo";
-import { HomeIcon, Layers2Icon, ShieldCheckIcon, CoinsIcon } from "lucide-react";
+import Logo from "@/components/Logo";
+import { HomeIcon, Layers2Icon, ShieldCheckIcon, CoinsIcon, MenuIcon } from "lucide-react";
 import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { usePathname } from "next/navigation";
 const routes = [
     {
@@ -46,6 +46,14 @@ function DesktopSidebar() {
                 </Link>
             ))}
         </div>
+    </div>
+}
+
+export function MobileSidebar() {
+    return <div className="md:hidden">
+        <Button variant="ghost" size="icon">
+            <MenuIcon size={20} />
+        </Button>
     </div>
 }
 
