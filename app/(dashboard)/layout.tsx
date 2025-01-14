@@ -3,7 +3,7 @@ import { Separator } from '@/components/ui/separator';
 import DesktopSidebar from '@/components/Sidebar';
 import BreadcrumbHeader from '@/components/BreadcrumbHeader';
 import { ModeToggle } from '@/components/ThemeModeToggle';
-
+import { SignedIn, UserButton } from '@clerk/nextjs';
 function DashboardLayout({ children }: { children: React.ReactNode }) {
     return <div className="flex h-screen">
         <DesktopSidebar />
@@ -12,6 +12,9 @@ function DashboardLayout({ children }: { children: React.ReactNode }) {
                 <BreadcrumbHeader/>
                 <div className="gap-1 flex item-center">
                     <ModeToggle />
+                    <SignedIn>
+                        <UserButton />
+                    </SignedIn>
                 </div>
             </header>
             <Separator />
