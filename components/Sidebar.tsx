@@ -10,7 +10,7 @@ import { usePathname } from "next/navigation";
 
 const routes = [
     {
-        href: "",
+        href: "/",
         label: "Home",
         icon: HomeIcon
     },
