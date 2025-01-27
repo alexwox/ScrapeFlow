@@ -4,7 +4,7 @@
 import { cn } from "@/lib/utils";
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { LucideIcon } from "lucide-react";
-
+import { Separator } from "@/components/ui/separator";
 interface Props {
     title?: string;
     subTitle?: string;
@@ -38,6 +38,8 @@ function CustomDialogHeader(props: Props) {
 
 
             </DialogTitle>
+            <Separator />
+
         </DialogHeader>
     )
 }
