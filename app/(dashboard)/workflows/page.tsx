@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Suspense } from 'react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 function page() {
     return (
@@ -9,9 +10,30 @@ function page() {
                     <p className="text-muted-foreground">Manage your workflows</p>
                 </div>
             </div>
-            
+
+            <div className="h-full py-6" >
+                 <Suspense fallback={<UserWorkflowsSkeleton />}>
+                    <UserWorkflows />
+                </Suspense>
+            </div>
         </div>
+
     );
+}
+
+function UserWorkflowsSkeleton() {
+    return(
+    <div className = "space-y-2">
+        {
+            [1, 2, 3, 4].map((i) => (<Skeleton key={i}  className="h-32 w-full" />))
+        }
+    </div>
+
+)
+}
+
+function UserWorkflows() {
+    return <div>Workflows</div>;
 }
 
 export default page;
