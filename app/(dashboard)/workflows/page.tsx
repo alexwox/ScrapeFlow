@@ -5,6 +5,7 @@ import { GetWorkflowsForUser } from '@/actions/workflows/getWorkflowsForUser';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertCircle } from 'lucide-react';
 import { InboxIcon } from 'lucide-react';
+import { CreateWorkflowDialog } from './_components/CreateWorkflowDialog';
 function page() {
     return (
         <div className="flex-1 flex flex-col h-full">
@@ -13,6 +14,7 @@ function page() {
                     <h1 className="text-3xl font-bold">Workflows</h1>
                     <p className="text-muted-foreground">Manage your workflows</p>
                 </div>
+                <CreateWorkflowDialog />
             </div>
 
             <div className="h-full py-6" >
@@ -59,7 +61,10 @@ async function UserWorkflows() {
                     <p className="font-bold">No workflows found</p>
                     <p className="text-muted-foreground">Click the button below to create your first workflow.</p>
                 </div>
+
+                <CreateWorkflowDialog triggerText="Create your first Workflow" />
             </div>
+
         )
     }
     return <div>Workflows</div>;
