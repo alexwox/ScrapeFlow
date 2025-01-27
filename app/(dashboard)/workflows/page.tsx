@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
-
+import { waitFor } from '@/lib/helper/waitFor';
 function page() {
     return (
         <div className="flex-1 flex flex-col h-full">
@@ -32,7 +32,8 @@ function UserWorkflowsSkeleton() {
 )
 }
 
-function UserWorkflows() {
+async function UserWorkflows() {
+    await waitFor(3000);
     return <div>Workflows</div>;
 }
 
