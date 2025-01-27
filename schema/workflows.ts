@@ -7,3 +7,4 @@ export const createWorkflowSchema = z.object({
 });
 
 
+export type createWorkflowSchemaType = z.infer<typeof createWorkflowSchema>;

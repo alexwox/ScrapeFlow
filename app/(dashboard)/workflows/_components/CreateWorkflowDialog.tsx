@@ -2,12 +2,12 @@
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import CustomDialogHeader from "@/components/CustomDialogHeader";
-import { Layers2Icon } from "lucide-react";
+import { Layers2Icon, Loader2Icon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createWorkflowSchema } from "@/schema/workflows";
+import { createWorkflowSchema, createWorkflowSchemaType } from "@/schema/workflows";
 import { z } from "zod";
 import {
     Form,
@@ -20,18 +20,39 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useMutation } from "@tanstack/react-query";
+import { createWorkflow } from "@/actions/workflows/createWorkflow";
+import { toast } from "sonner";
 
 
 export function CreateWorkflowDialog({ triggerText }: { triggerText?: string }) {
     const [open, setOpen] = useState(false);
 
-    const form = useForm<z.infer<typeof createWorkflowSchema>>({
+    const form = useForm<createWorkflowSchemaType>({
         resolver: zodResolver(createWorkflowSchema),
         defaultValues: {
             name: "",
             description: "",
         },
     });
+
+    const { mutate, isPending } = useMutation({
+        mutationFn: createWorkflow,
+        onSuccess: () => {
+            toast.success("Workflow created", { id: "create-workflow" });
+        },
+        onError: () => {
+            toast.error("Failed to create workflow", { id: "create-workflow" });
+        },
+    })
+
+    const onSubmit = useCallback(
+        (values: createWorkflowSchemaType) => {
+            toast.loading("Creating workflow...", { id: "create-workflow" });
+            mutate(values);
+        }, 
+        [mutate]
+    );
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -47,7 +68,10 @@ export function CreateWorkflowDialog({ triggerText }: { triggerText?: string }) 
 
                 <div className="p-6">
                     <Form {...form}>
-                        <form className="space-y-8 w-full">
+                        <form 
+                            className="space-y-8 w-full" 
+                            onSubmit={form.handleSubmit(onSubmit)}
+                        >
                             <FormField
                                 control={form.control}
                                 name="name"
@@ -86,8 +110,9 @@ export function CreateWorkflowDialog({ triggerText }: { triggerText?: string }) 
                                     </FormItem>
                                 )}
                             />
-                            <Button type="submit" className="w-full">
-                                Submit 
+                            <Button type="submit" className="w-full" disabled={isPending}>
+                                {!isPending && "Submit"}
+                                {isPending && <Loader2Icon className="w-4 h-4 animate-spin" />}
                             </Button>
                         </form>
                     </Form>
