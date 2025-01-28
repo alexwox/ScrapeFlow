@@ -49,7 +49,6 @@ async function UserWorkflows() {
             </Alert>
         );
     }
-    await waitFor(3000);
 
     if (workflows.length === 0) {
         return (
@@ -67,7 +66,7 @@ async function UserWorkflows() {
 
         )
     }
-    return <div>Workflows</div>;
+    return <pre className="text-sm">{JSON.stringify(workflows, null, 4)}</pre>;
 }
 
 export default page;
