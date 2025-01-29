@@ -24,7 +24,7 @@ function TooltipWrapper(props: Props) {
                 {props.children}
             </TooltipTrigger>
             <TooltipContent side={props.side}>
-                {props.children}
+                {props.content}
             </TooltipContent>
         </Tooltip>
     </TooltipProvider>
