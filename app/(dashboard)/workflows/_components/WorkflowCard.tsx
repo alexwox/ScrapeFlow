@@ -45,8 +45,8 @@ function WorkflowCard({ workflow }: { workflow: Workflow }) {
                     </div>
                     <div className="">
                         <h3 className="text-base font-bold text-muted-foreground flex items-center">
-                            <Link href={`/workflows/editor${workflow.id}`}
-                                className="flex items-cetner hover:underline">{workflow.name}
+                            <Link href={`/workflow/editor/${workflow.id}`}
+                                className="flex items-center hover:underline">{workflow.name}
                             </Link>
 
                             {isDraft && (
@@ -58,7 +58,7 @@ function WorkflowCard({ workflow }: { workflow: Workflow }) {
                     </div>
                 </div>
                 <div className="flex items-center space-x-2">
-                    <Link href={`/workflows/editor${workflow.id}`}
+                    <Link href={`/workflow/editor/${workflow.id}`}
                         className={cn(
                             buttonVariants({
                                 variant: "outline",
