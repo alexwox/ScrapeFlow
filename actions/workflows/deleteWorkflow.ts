@@ -5,15 +5,15 @@ import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 
 export async function DeleteWorkflow(id: string) {
-    const {userId} = auth();
+    const { userId } = auth();
 
-    if(!userId) {
+    if (!userId) {
         throw new Error("unathenticated");
     }
 
     await prisma.workflow.delete({
         where: {
-            id, 
+            id,
             userId,
         },
     });
