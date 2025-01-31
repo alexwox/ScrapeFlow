@@ -41,7 +41,7 @@ function FlowEditor({ workflow }: { workflow: Workflow }) {
     }, [workflow.definition, setEdges, setNodes, setViewport]);
 
     return (
-        <main className="h-full w-full">
+        <div className="h-full w-full bg-background">
             <ReactFlow
                 nodes={nodes}
                 edges={edges}
@@ -51,12 +51,17 @@ function FlowEditor({ workflow }: { workflow: Workflow }) {
                 snapToGrid
                 snapGrid={snapGrid}
                 fitView
+                className="bg-background"
             >
-
+                <Controls position="top-left" fitViewOptions={fitViewOptions}/>
+                <Background 
+                    variant={BackgroundVariant.Dots} 
+                    gap={12} 
+                    size={1}
+                    className="!bg-transparent"
+                />
             </ReactFlow>
-            <Controls position="top-left" fitViewOptions={fitViewOptions}/>
-            <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
-        </main>
+        </div>
     )
 }
 
