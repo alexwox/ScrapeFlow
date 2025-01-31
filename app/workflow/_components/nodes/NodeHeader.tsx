@@ -22,8 +22,7 @@ function NodeHeader({ taskType }: { taskType: TaskType }) {
                         <CoinsIcon size={16} />
                         Todo
                     </Badge>
-                    <Button variant={"ghost"} size={"icon"} className="
-                    drag-handle cursor-grap">
+                    <Button variant={"ghost"} size={"icon"} className="drag-handle cursor-grab">
                         <GripVerticalIcon size={20} />
                     </Button>
                 </div>
