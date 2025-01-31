@@ -1,8 +1,7 @@
 "use client";
 
 import {
-    Tooltip,
-    TooptipContent, 
+    Tooltip, 
     TooltipProvider,
     TooltipTrigger,
     TooltipContent,
