@@ -5,6 +5,7 @@ import React, { useCallback } from 'react'
 import StringParam from './param/StringParam'
 import { useReactFlow } from '@xyflow/react'
 import { AppNode } from '@/types/appNode'
+import BrowserInstanceParam from './param/BrowserInstanceParam'
 
 function NodeParamField({
     param,
@@ -29,7 +30,9 @@ function NodeParamField({
     switch (param.type) {
         case TaskParamType.STRING:
             return <StringParam param={param} value={value} updateNodeParamValue={updateNodeParamValue}/>
-        default:
+        case TaskParamType.BROWSER_INSTANCE:
+            return <BrowserInstanceParam param={param} value={""} updateNodeParamValue={updateNodeParamValue}/>
+            default:
             return <div className="w-full">
                 <p className="text-xs text-muted-foreground">
                     Not implemented yet

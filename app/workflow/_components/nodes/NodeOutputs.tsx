@@ -1,8 +1,10 @@
 "use client"
 
+import { cn } from "@/lib/utils"
 import { TaskParam } from "@/types/task"
 import { Handle, Position } from "@xyflow/react"
 import { ReactNode } from "react"
+import { ColorForHandle } from "./common"
 
 export function NodeOutputs({ children }: { children: React.ReactNode }) {
     return (
@@ -18,7 +20,12 @@ export function NodeOutput({ output }: { output: TaskParam }) {
             <p className="text-xs text-muted-foreground">
                 {output.name}
             </p>
-            <Handle id={output.name} type="source" position={Position.Right}/>
+            <Handle id={output.name} type="source" position={Position.Right}
+                className={cn(
+                    "!bg-muted-foreground !border-2 !border-background !-right-2 !w-4 !h-4",
+                    ColorForHandle[output.type] 
+                )}
+            />
         </div>
     )
 }
