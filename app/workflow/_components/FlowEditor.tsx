@@ -1,7 +1,7 @@
 "use client"
 
 import { Workflow } from '@prisma/client'
-import { Background, BackgroundVariant, Controls, ReactFlow, useEdgesState, useNodesState, useReactFlow } from '@xyflow/react'
+import { Background, BackgroundVariant, Connection, Controls, ReactFlow, useEdgesState, useNodesState, useReactFlow } from '@xyflow/react'
 import React, { useCallback, useEffect } from 'react'
 
 import "@xyflow/react/dist/style.css";
@@ -59,6 +59,10 @@ function FlowEditor({ workflow }: { workflow: Workflow }) {
         const newNode = CreateFlowNode(taskType as TaskType, position);
         setNodes(nds => nds.concat(newNode))
     }, []);
+    
+    const onConnect = useCallback((connection: Connection) => {
+        console.log("@ONCONNECT", connection)
+    }, []);
 
     return (
         <div className="h-full w-full bg-background">
@@ -74,6 +78,7 @@ function FlowEditor({ workflow }: { workflow: Workflow }) {
                 className="bg-background"
                 onDragOver= { onDragOver }
                 onDrop = { onDrop }
+                onConnect={ onConnect }
             >
                 <Controls position="top-left" fitViewOptions={fitViewOptions}/>
                 <Background 
