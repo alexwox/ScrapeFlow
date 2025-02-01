@@ -1,12 +1,10 @@
-"use client"
+"use client";
 
-import { ParamProps } from '@/types/appNode'
-import React from 'react'
+import { ParamProps } from "@/types/appNode";
+import React from "react";
 
 function BrowserInstanceParam({ param }: ParamProps) {
-    return (
-        <p className="text-xs">{param.name}</p>
-    )
+  return <p className="text-xs">{param.name}</p>;
 }
 
-export default BrowserInstanceParam
+export default BrowserInstanceParam;
