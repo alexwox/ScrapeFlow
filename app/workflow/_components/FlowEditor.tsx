@@ -22,7 +22,6 @@ import { TaskType } from "@/types/task";
 import NodeComponent from "./nodes/NodeComponent";
 import { AppNode } from "@/types/appNode";
 import DeletableEdge from "./edges/DeletableEdge";
-import { connect } from "http2";
 import { TaskRegistry } from "@/lib/workflow/task/registry";
 
 const nodeTypes = {
