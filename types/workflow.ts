@@ -20,4 +20,4 @@ export type WorkflowTask = {
 export type WorkflowExecutionPlan = {
   phase: number;
   nodes: AppNode[];
-};
+}[];
