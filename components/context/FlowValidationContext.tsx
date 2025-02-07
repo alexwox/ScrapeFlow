@@ -30,7 +30,13 @@ export function FlowValidationContextProvider({
   };
 
   return (
-    <FlowValidationContext.Provider value={{}}>
+    <FlowValidationContext.Provider
+      value={{
+        invalidInputs,
+        setInvalidInputs,
+        clearErrors,
+      }}
+    >
       {" "}
       {children}
     </FlowValidationContext.Provider>
