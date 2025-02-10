@@ -26,7 +26,10 @@ function ExecutionViewer({ initialData }: { initialData: ExecutionData }) {
     refetchInterval: (q) =>
       q.state.data?.status === WorkflowExecutionStatus.RUNNING ? 1000 : false,
   });
-
+  const duration = DatesToDurationString(
+    query.data?.completedAt,
+    query.data?.startedAt
+  );
   return (
     <div className="flex w-full h-full">
       <aside className="w-[440px] min-w-[440px] max-w-[440px] border-r-2 border-separate flex flex-grow flex-col overflow-hidden">
