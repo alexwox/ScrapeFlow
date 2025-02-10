@@ -39,7 +39,8 @@ function ExecuteBtn({ workflowId }: { workflowId: string }) {
         });
       }}
     >
-      <PlayIcon size={16} className="stroke-organge-400" />
+      <PlayIcon size={16} className="stroke-orange-400" />
+      Execute
     </Button>
   );
 }
