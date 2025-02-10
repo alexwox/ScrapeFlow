@@ -1,6 +1,7 @@
 "use client";
 
 import { GetWorkflowExecutionWithPhases } from "@/actions/workflows/getWorkflowExecutionWithPhases";
+import { GetWorkflowPhaseDetails } from "@/actions/workflows/getWorkflowPhaseDetails";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -33,6 +34,8 @@ function ExecutionViewer({ initialData }: { initialData: ExecutionData }) {
   });
   const phaseDetails = useQuery({
     queryKey: ["phaseDetails", selectedPhase],
+    enabled: selectedPhase !== null,
+    queryFn: () => GetWorkflowPhaseDetails(selectedPhase!),
   });
 
   const isRunning = query.data?.status === WorkflowExecutionStatus.RUNNING;
@@ -113,6 +116,9 @@ function ExecutionViewer({ initialData }: { initialData: ExecutionData }) {
           ))}
         </div>
       </aside>
+      <div className="flex w-full h-full">
+        <pre> {JSON.stringify(phaseDetails.data, null, 4)} </pre>
+      </div>
     </div>
   );
 }
