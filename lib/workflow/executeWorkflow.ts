@@ -174,7 +174,7 @@ async function finalizePhase(phaseId: string, success: boolean) {
 async function executePhase(
   phase: ExecutionPhase,
   node: AppNode,
-  environment: any
+  environment: Environment
 ): Promise<boolean> {
   const runFn = ExecutorRegistry[node.data.type];
   if (!runFn) {
