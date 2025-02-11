@@ -134,7 +134,7 @@ async function executeWorkflowPhase(
 ) {
   const startedAt = new Date();
   const node = JSON.parse(phase.node) as AppNode;
-
+  setupEnvironmentForPhase(node, environment);
   //Update phase status
 
   await prisma.executionPhase.update({
@@ -185,4 +185,8 @@ async function executePhase(
     return false;
   }
   return await runFn(environment);
+}
+
+function setupEnvironmentForPhase(node: AppNode, environment: Environment) {
+  environment.phases[node.id] = { inputs: {}, outputs: {} };
 }
