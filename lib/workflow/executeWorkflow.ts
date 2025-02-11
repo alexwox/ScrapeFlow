@@ -11,6 +11,7 @@ import { AppNode } from "@/types/appNode";
 import { TaskRegistry } from "./task/registry";
 import App from "next/app";
 import { ExecutorRegistry } from "./executor/registry";
+import { Environment } from "@/types/executor";
 
 export async function ExecuteWorkflow(executionId: string) {
   const execution = await prisma.workflowExecution.findUnique({
@@ -22,7 +23,7 @@ export async function ExecuteWorkflow(executionId: string) {
     throw new Error("execution not found");
   }
 
-  const environment = { phases: {} };
+  const environment: Environment = { phases: {} };
 
   await initializeWorkflowExecution(executionId, execution.workflowId);
 
@@ -35,7 +36,7 @@ export async function ExecuteWorkflow(executionId: string) {
   for (const phase of execution.phases) {
     await waitFor(2000);
     // Consume Credits
-    const phaseExecution = await executeWorkflowPhase(phase);
+    const phaseExecution = await executeWorkflowPhase(phase, environment);
     if (!phaseExecution.success) {
       executionFailed = true;
       break;
@@ -127,7 +128,10 @@ async function finalizeWorkflowExecution(
     });
 }
 
-async function executeWorkflowPhase(phase: ExecutionPhase) {
+async function executeWorkflowPhase(
+  phase: ExecutionPhase,
+  environment: Environment
+) {
   const startedAt = new Date();
   const node = JSON.parse(phase.node) as AppNode;
 
@@ -151,7 +155,7 @@ async function executeWorkflowPhase(phase: ExecutionPhase) {
   // Decrease user balance of credits
 
   //Execute phase simukation
-  const success = await executePhase(phase, node);
+  const success = await executePhase(phase, node, environment);
 
   await finalizePhase(phase.id, success);
   return { success };

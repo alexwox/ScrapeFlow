@@ -1,4 +1,7 @@
+import { Browser } from "puppeteer";
+
 export type Environment = {
+  browser?: Browser;
   phases: Record<
     string,
     {
