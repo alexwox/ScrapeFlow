@@ -9,7 +9,7 @@ type ExecutorFn<T extends WorkflowTask> = (
 ) => Promise<boolean>;
 
 type RegistryType = {
-  [K in TaskType]: ExecutorFn<any>;
+  [K in TaskType]: ExecutorFn<WorkflowTask & { type: K }>;
 };
 
 export const ExecutorRegistry: RegistryType = {
