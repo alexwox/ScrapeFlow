@@ -16,6 +16,7 @@ export async function ExtractTextFromElementExecutor(
     const html = environment.getInput("HTML");
     if (!html) {
       console.error("Html not defined");
+      environment.log.error("Html not defined");
       return false;
     }
 
@@ -24,20 +25,22 @@ export async function ExtractTextFromElementExecutor(
 
     if (!element) {
       console.error("Element not found");
+      environment.log.error("Element not found");
       return false;
     }
 
     const extractedText = $.text(element);
     if (!extractedText) {
       console.error("Element has no text");
+      environment.log.error("Element has no text");
       return false;
     }
 
     environment.setOutput("Extracted Text", extractedText);
 
     return true;
-  } catch (error) {
-    console.error(error);
+  } catch (error: any) {
+    environment.log.error(error.message);
     return false;
   }
 }
