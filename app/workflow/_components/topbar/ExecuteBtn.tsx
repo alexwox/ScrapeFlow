@@ -35,7 +35,7 @@ function ExecuteBtn({ workflowId }: { workflowId: string }) {
 
         mutation.mutate({
           workflowId: workflowId,
-          flowDefintion: JSON.stringify(toObject()),
+          flowDefinition: JSON.stringify(toObject()),
         });
       }}
     >
