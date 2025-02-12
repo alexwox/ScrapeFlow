@@ -12,6 +12,9 @@ import { TaskRegistry } from "./task/registry";
 import App from "next/app";
 import { ExecutorRegistry } from "./executor/registry";
 import { Environment, ExecutionEnvironment } from "@/types/executor";
+import { TaskParamType } from "@/types/task";
+import { Browser, Page } from "puppeteer";
+import { any } from "zod";
 
 export async function ExecuteWorkflow(executionId: string) {
   const execution = await prisma.workflowExecution.findUnique({
@@ -50,7 +53,7 @@ export async function ExecuteWorkflow(executionId: string) {
     creditsConsumed
   );
 
-  // Clean up env
+  await cleanupEnvironment(environment);
 
   revalidatePath("/workflows/runs");
 }
@@ -157,12 +160,13 @@ async function executeWorkflowPhase(
 
   //Execute phase simukation
   const success = await executePhase(phase, node, environment);
+  const outputs = environment.phases[node.id].outputs;
 
-  await finalizePhase(phase.id, success);
+  await finalizePhase(phase.id, success, outputs);
   return { success };
 }
 
-async function finalizePhase(phaseId: string, success: boolean) {
+async function finalizePhase(phaseId: string, success: boolean, outputs: any) {
   const finalStatus = success
     ? ExecutionPhaseStatus.COMPLETED
     : ExecutionPhaseStatus.FAILED;
@@ -172,6 +176,7 @@ async function finalizePhase(phaseId: string, success: boolean) {
     data: {
       status: finalStatus,
       completedAt: new Date(),
+      outputs: JSON.stringify(outputs),
     },
   });
 }
@@ -194,6 +199,7 @@ function setupEnvironmentForPhase(node: AppNode, environment: Environment) {
   environment.phases[node.id] = { inputs: {}, outputs: {} };
   const inputs = TaskRegistry[node.data.type].inputs;
   for (const input of inputs) {
+    if (input.type === TaskParamType.BROWSER_INSTANCE) continue;
     const inputValue = node.data.inputs[input.name];
     if (inputValue) {
       environment.phases[node.id].inputs[input.name] = inputValue;
@@ -204,8 +210,26 @@ function setupEnvironmentForPhase(node: AppNode, environment: Environment) {
   }
 }
 
-function createExecutionEnvironment(node: AppNode, environment: Environment) {
+function createExecutionEnvironment(
+  node: AppNode,
+  environment: Environment
+): ExecutionEnvironment<any> {
   return {
     getInput: (name: string) => environment.phases[node.id]?.inputs[name],
+    setOutput: (name: string, value: string) => {
+      environment.phases[node.id].outputs[name] = value;
+    },
+    getBrowser: () => environment.browser,
+    setBrowser: (browser: Browser) => (environment.browser = browser),
+    getPage: () => environment.page,
+    setPage: (page: Page) => (environment.page = page),
   };
+}
+
+async function cleanupEnvironment(environment: Environment) {
+  if (environment.browser) {
+    await environment.browser
+      .close()
+      .catch((err) => console.error("Cannot close browser, reason: ", err));
+  }
 }
