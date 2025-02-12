@@ -1,5 +1,4 @@
 import { ExecutionEnvironment } from "@/types/executor";
-import { LaunchBrowserTask } from "../task/LaunchBrowser";
 import { PageToHTMLTask } from "../task/PageToHTML";
 
 export async function PageToHTMLExecutor(

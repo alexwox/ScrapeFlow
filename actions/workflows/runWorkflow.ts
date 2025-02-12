@@ -15,14 +15,14 @@ import { redirect } from "next/navigation";
 
 export async function RunWorkflow(form: {
   workflowId: string;
-  flowDefintion?: string;
+  flowDefinition?: string;
 }) {
   const { userId } = auth();
   if (!userId) {
     throw new Error("Unauthenticated");
   }
 
-  const { workflowId, flowDefintion } = form;
+  const { workflowId, flowDefinition } = form;
   if (!workflowId) {
     throw new Error("WorkflowID is required");
   }
@@ -39,12 +39,12 @@ export async function RunWorkflow(form: {
   }
 
   let executionPlan: WorkflowExecutionPlan;
-  if (!flowDefintion) {
+  if (!flowDefinition) {
     // Undefined for published workflows
     throw new Error("Flow definition not defined");
   }
 
-  const flow = JSON.parse(flowDefintion);
+  const flow = JSON.parse(flowDefinition);
   const result = FlowToExecutionPlan(flow.nodes, flow.edges);
   if (result.error) {
     throw new Error("Flow deifinition not valid");
@@ -62,6 +62,7 @@ export async function RunWorkflow(form: {
       status: WorkflowExecutionStatus.PENDING,
       startedAt: new Date(),
       trigger: WorkflowExecutionTrigger.MANUAL,
+      definition: flowDefinition,
       phases: {
         create: executionPlan.flatMap((phase) => {
           return phase.nodes.flatMap((node) => {
