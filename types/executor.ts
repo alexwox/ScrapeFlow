@@ -24,4 +24,6 @@ export type ExecutionEnvironment<T extends WorkflowTask> = {
   getPage(): Page | undefined;
 
   setPage(page: Page): void;
+
+  log: LogCollector;
 };
