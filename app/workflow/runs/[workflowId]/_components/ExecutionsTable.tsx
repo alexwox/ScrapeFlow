@@ -12,6 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { DatesToDurationString } from "@/lib/helper/dates";
+import { Badge } from "@/components/ui/badge";
 
 type InitialDataType = Awaited<ReturnType<typeof GetWorkflowExecutions>>;
 
@@ -52,6 +53,10 @@ function ExecutionsTable({
                 <TableCell>
                   <div className="flex flex-col">
                     <span className="font-semibold">{execution.id}</span>
+                    <div className="text-muted-foreground text-xs">
+                      <span className="">Triggered via</span>
+                      <Badge variant={"outline"}> {execution.trigger}</Badge>
+                    </div>
                   </div>
                 </TableCell>
               </TableRow>
