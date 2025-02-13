@@ -73,6 +73,7 @@ model ExecutionPhase {
 model ExecutionLog {
   id        String   @id @default(cuid())
   logLevel  String
+  message   String
   timestamp DateTime @default(now())
 
   executionPhaseId String
