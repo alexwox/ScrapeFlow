@@ -147,6 +147,7 @@ async function executeWorkflowPhase(
   const logCollector = createLogCollector();
   const startedAt = new Date();
   const node = JSON.parse(phase.node) as AppNode;
+
   setupEnvironmentForPhase(node, environment, edges);
   //Update phase status
 
