@@ -25,7 +25,10 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { DatesToDurationString } from "@/lib/helper/dates";
 import { GetPhasesTotalCost } from "@/lib/helper/phases";
-import { WorkflowExecutionStatus } from "@/types/workflow";
+import {
+  ExecutionPhaseStatus,
+  WorkflowExecutionStatus,
+} from "@/types/workflow";
 import { ExecutionLog } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";
@@ -39,6 +42,9 @@ import {
   WorkflowIcon,
 } from "lucide-react";
 import React, { ReactNode, useState } from "react";
+import { cn } from "@/lib/utils";
+import { LogLevel } from "@/types/log";
+import PhaseStatusBage from "./PhaseStatusBage";
 
 type ExecutionData = Awaited<ReturnType<typeof GetWorkflowExecutionWithPhases>>;
 function ExecutionViewer({ initialData }: { initialData: ExecutionData }) {
@@ -130,7 +136,7 @@ function ExecutionViewer({ initialData }: { initialData: ExecutionData }) {
                 <Badge variant={"outline"}> {index + 1} </Badge>
                 <p className="font-semibold">{phase.name}</p>
               </div>
-              <p className="text-xs text-muted-foreground">{phase.status}</p>
+              <PhaseStatusBage status={phase.status as ExecutionPhaseStatus} />
             </Button>
           ))}
         </div>
@@ -266,7 +272,7 @@ function ParameterViewer({
 }
 
 function LogViewer({ logs }: { logs: ExecutionLog[] | undefined }) {
-  if (!logs || logs.length === 0) return 0;
+  if (!logs || logs.length === 0) return;
   return (
     <Card className="w-full">
       <CardHeader className="rounded-lg rounded-b-none border-b py-4 bg-gray-50 dark:bg-background">
@@ -287,9 +293,25 @@ function LogViewer({ logs }: { logs: ExecutionLog[] | undefined }) {
           <TableBody>
             {logs.map((log) => (
               <TableRow key={log.id} className="text-muted-foreground">
-                <TableCell> {log.timestamp.toISOString()}</TableCell>
-                <TableCell> {log.logLevel}</TableCell>
-                <TableCell> {log.message}</TableCell>
+                <TableCell
+                  width={190}
+                  className="text-xs text-muted-foreground p-[2px] pl-4"
+                >
+                  {log.timestamp.toISOString()}
+                </TableCell>
+                <TableCell
+                  className={cn(
+                    "uppercase text-xs font-bold p-[3px] pl-4",
+                    (log.logLevel as LogLevel) === "error" &&
+                      "text-destructive",
+                    (log.logLevel as LogLevel) === "info" && "text-primary"
+                  )}
+                >
+                  {log.logLevel}
+                </TableCell>
+                <TableCell className="text-sm flex-1 p-[3px] pl-4">
+                  {log.message}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

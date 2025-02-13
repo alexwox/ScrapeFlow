@@ -12,10 +12,11 @@ export async function LaunchBrowserExecutor(
       headless: true,
     });
     environment.setBrowser(browser);
+    environment.log.info("Browser started successfully");
     const page = await browser.newPage();
     await page.goto(websiteUrl);
     environment.setPage(page);
-
+    environment.log.info(`Opened page at: ${websiteUrl}`);
     return true;
   } catch (error: any) {
     environment.log.error(error.message);
