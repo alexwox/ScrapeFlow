@@ -13,6 +13,8 @@ import {
 } from "@/components/ui/table";
 import { DatesToDurationString } from "@/lib/helper/dates";
 import { Badge } from "@/components/ui/badge";
+import ExecutionStatusIndicator from "./ExecutionStatusIndicator";
+import { WorkflowExecutionStatus } from "@/types/workflow";
 
 type InitialDataType = Awaited<ReturnType<typeof GetWorkflowExecutions>>;
 
@@ -57,6 +59,16 @@ function ExecutionsTable({
                       <span className="">Triggered via</span>
                       <Badge variant={"outline"}> {execution.trigger}</Badge>
                     </div>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div className="">
+                    <div className="">
+                      <ExecutionStatusIndicator
+                        status={execution.status as WorkflowExecutionStatus}
+                      />
+                    </div>
+                    <div className="">{duration}</div>
                   </div>
                 </TableCell>
               </TableRow>
