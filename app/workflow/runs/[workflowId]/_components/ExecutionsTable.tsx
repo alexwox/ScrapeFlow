@@ -57,7 +57,11 @@ function ExecutionsTable({
               execution.startedAt &&
               formatDistanceToNow(execution.startedAt, { addSuffix: true });
             return (
-              <TableRow key={execution.id} className="cursor-pointer">
+              <TableRow
+                key={execution.id}
+                className="cursor-pointer"
+                onClick={() => {}}
+              >
                 <TableCell>
                   <div className="flex flex-col">
                     <span className="font-semibold">{execution.id}</span>
