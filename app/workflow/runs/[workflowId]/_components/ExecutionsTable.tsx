@@ -15,6 +15,8 @@ import { DatesToDurationString } from "@/lib/helper/dates";
 import { Badge } from "@/components/ui/badge";
 import ExecutionStatusIndicator from "./ExecutionStatusIndicator";
 import { WorkflowExecutionStatus } from "@/types/workflow";
+import { CoinsIcon } from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
 
 type InitialDataType = Awaited<ReturnType<typeof GetWorkflowExecutions>>;
 
@@ -50,8 +52,12 @@ function ExecutionsTable({
               execution.completedAt,
               execution.startedAt
             );
+
+            const formattedStartedAt =
+              execution.startedAt &&
+              formatDistanceToNow(execution.startedAt, { addSuffix: true });
             return (
-              <TableRow key={execution.id}>
+              <TableRow key={execution.id} className="cursor-pointer">
                 <TableCell>
                   <div className="flex flex-col">
                     <span className="font-semibold">{execution.id}</span>
@@ -62,14 +68,35 @@ function ExecutionsTable({
                   </div>
                 </TableCell>
                 <TableCell>
-                  <div className="">
-                    <div className="">
+                  <div className="flex flex-col">
+                    <div className="flex gap-2 items-center">
                       <ExecutionStatusIndicator
                         status={execution.status as WorkflowExecutionStatus}
                       />
+                      <span className="font-semibold capitalize">
+                        {execution.status}
+                      </span>
                     </div>
-                    <div className="">{duration}</div>
+                    <div className="text-muted-foreground text-xs mx-5">
+                      {duration}
+                    </div>
                   </div>
+                </TableCell>
+                <TableCell>
+                  <div className="flex flex-col">
+                    <div className="flex gap-2 items-center">
+                      <CoinsIcon size={16} className="text-primary" />
+                      <span className="font-semibold capitalize">
+                        {execution.creditsConsumed}
+                      </span>
+                    </div>
+                    <div className="text-muted-foreground text-xs mx-5">
+                      Credits
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell className="text-right text-muted-foreground">
+                  {formattedStartedAt}
                 </TableCell>
               </TableRow>
             );
