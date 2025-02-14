@@ -98,7 +98,11 @@ function ExecutionViewer({ initialData }: { initialData: ExecutionData }) {
           <ExecutionLabel
             icon={CircleDashedIcon}
             label={"Status"}
-            value={query.data?.status}
+            value={
+              <div>
+                <PhaseStatusBage status={query.data?.status}>
+              </div>
+            }
           />
           {/* Started at */}
           <ExecutionLabel
