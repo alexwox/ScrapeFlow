@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import React from "react";
 
-function PhaseStatusBage({ status }: { status: ExecutionPhaseStatus }) {
+function PhaseStatusBadge({ status }: { status: ExecutionPhaseStatus }) {
   switch (status) {
     case ExecutionPhaseStatus.PENDING:
       return <CircleDashedIcon size={20} className="stroke-muted-foreground" />;
@@ -24,4 +24,4 @@ function PhaseStatusBage({ status }: { status: ExecutionPhaseStatus }) {
   }
 }
 
-export default PhaseStatusBage;
+export default PhaseStatusBadge;

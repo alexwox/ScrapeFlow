@@ -44,7 +44,7 @@ import {
 import React, { ReactNode, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { LogLevel } from "@/types/log";
-import PhaseStatusBage from "./PhaseStatusBage";
+import PhaseStatusBadge from "./PhaseStatusBadge";
 import ReactCountUpWrapper from "@/components/ReactCountUpWrapper";
 
 type ExecutionData = Awaited<ReturnType<typeof GetWorkflowExecutionWithPhases>>;
@@ -99,8 +99,11 @@ function ExecutionViewer({ initialData }: { initialData: ExecutionData }) {
             icon={CircleDashedIcon}
             label={"Status"}
             value={
-              <div>
-                <PhaseStatusBage status={query.data?.status}>
+              <div className="font-semibold capitalize flex gap-2 items-center">
+                <PhaseStatusBadge
+                  status={query.data?.status as ExecutionPhaseStatus}
+                />
+                <span>{query.data?.status}</span>
               </div>
             }
           />
@@ -158,7 +161,7 @@ function ExecutionViewer({ initialData }: { initialData: ExecutionData }) {
                 <Badge variant={"outline"}> {index + 1} </Badge>
                 <p className="font-semibold">{phase.name}</p>
               </div>
-              <PhaseStatusBage status={phase.status as ExecutionPhaseStatus} />
+              <PhaseStatusBadge status={phase.status as ExecutionPhaseStatus} />
             </Button>
           ))}
         </div>
