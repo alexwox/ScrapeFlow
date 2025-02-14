@@ -4,6 +4,7 @@ import { waitFor } from "@/lib/helper/waitFor";
 import { Loader2Icon } from "lucide-react";
 import { Suspense } from "react";
 import ExecutionViewer from "./_components/ExecutionViewer";
+import React from "react";
 
 export default function ExecutionViewerPage({
   params,
