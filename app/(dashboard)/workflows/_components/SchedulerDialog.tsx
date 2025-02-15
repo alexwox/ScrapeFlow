@@ -53,6 +53,10 @@ export default function SchedulerDialog(props: {
       setValidCron(false);
     }
   }, [cron]);
+
+  const workflowHasValidCron = props.cron && props.cron.length > 0;
+  const readableSavedCron =
+    workflowHasValidCron && cronstrue.toString(props.cron!);
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -61,16 +65,16 @@ export default function SchedulerDialog(props: {
           size={"sm"}
           className={cn(
             "text-sm p-0 h-auto text-orange-500",
-            validCron && "text-primary"
+            workflowHasValidCron && "text-primary"
           )}
         >
-          {validCron && (
+          {workflowHasValidCron && (
             <div className="flex items-center gap-2">
               <ClockIcon />
-              {readableCron}
+              {readableSavedCron}
             </div>
           )}
-          {!validCron && (
+          {!workflowHasValidCron && (
             <div className="flex items-center gap-1">
               <TriangleAlertIcon className="h-3 w-3 mr-1" /> Set Schedule
             </div>
@@ -95,10 +99,12 @@ export default function SchedulerDialog(props: {
           <div
             className={cn(
               "bg-accent rounded-md p-4 border text-sm border-destructive text-destructive",
-              validCron && "border-primary text-primary"
+              workflowHasValidCron && "border-primary text-primary"
             )}
           >
-            {validCron ? readableCron : "Not a valid cron expression"}
+            {workflowHasValidCron
+              ? readableSavedCron
+              : "Not a valid cron expression"}
           </div>
         </div>
         <DialogFooter className="px-6 gap-2">
