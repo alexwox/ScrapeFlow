@@ -1,24 +1,17 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { ExecuteWorkflow } from "@/lib/workflow/executeWorkflow";
 import { FlowToExecutionPlan } from "@/lib/workflow/executionPlan";
-import { TaskRegistry } from "@/lib/workflow/task/registry";
-import {
-  ExecutionPhaseStatus,
-  WorkflowExecutionPlan,
-  WorkflowExecutionStatus,
-  WorkflowExecutionTrigger,
-  WorkflowStatus,
-} from "@/types/workflow";
+import { CalculateWorkflowCost } from "@/lib/workflow/helpers";
+import { WorkflowStatus } from "@/types/workflow";
 import { auth } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 export async function PublishWorkflow({
-  workflowId,
+  id,
   flowDefinition,
 }: {
-  workflowId: string;
+  id: string;
   flowDefinition: string;
 }) {
   const { userId } = auth();
@@ -26,14 +19,14 @@ export async function PublishWorkflow({
     throw new Error("Unauthenticated");
   }
 
-  if (!workflowId) {
+  if (!id) {
     throw new Error("WorkflowID is required");
   }
 
   const workflow = await prisma.workflow.findUnique({
     where: {
       userId,
-      id: workflowId,
+      id,
     },
   });
 
@@ -55,4 +48,20 @@ export async function PublishWorkflow({
   if (!result.executionPlan) {
     throw new Error("No nxecution plan generated");
   }
+
+  const creditsCost = CalculateWorkflowCost(flow.nodes);
+  await prisma.workflow.update({
+    where: {
+      id,
+      userId,
+    },
+    data: {
+      definition: flowDefinition,
+      executionPlan: JSON.stringify(result.executionPlan),
+      creditsCost,
+      status: WorkflowStatus.PUBLISHED,
+    },
+  });
+
+  revalidatePath(`/workflow/editor/${id}`);
 }
