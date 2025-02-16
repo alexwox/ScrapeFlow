@@ -6,6 +6,9 @@ See video: https://www.youtube.com/watch?v=RkwbGuL-dzo&t=18243s
 Workflow platforms with tasks, AI features and webscraping.
 Allows users to create custom workflows.
 
+Tech Stack:
+Next.JS, TypeScript, Prisma ORM, OpenAI SDK, React-flow, React-query amongst other...
+
 Random docs below //Need to fix
 
 **To create a new task:**
