@@ -25,6 +25,7 @@ import { useMutation } from "@tanstack/react-query";
 import { UpdateWorkflowCron } from "@/actions/workflows/updateWorkflowCron";
 import { toast } from "sonner";
 import cronstrue from "cronstrue";
+import parser from "cron-parser";
 
 export default function SchedulerDialog(props: {
   workflowId: string;
@@ -46,6 +47,7 @@ export default function SchedulerDialog(props: {
 
   useEffect(() => {
     try {
+      const include = parser.parseExpression(cron);
       const humanCronStr = cronstrue.toString(cron);
       setValidCron(true);
       setReadableCron(humanCronStr);
@@ -99,12 +101,10 @@ export default function SchedulerDialog(props: {
           <div
             className={cn(
               "bg-accent rounded-md p-4 border text-sm border-destructive text-destructive",
-              workflowHasValidCron && "border-primary text-primary"
+              validCron && "border-primary text-primary"
             )}
           >
-            {workflowHasValidCron
-              ? readableSavedCron
-              : "Not a valid cron expression"}
+            {validCron ? readableCron : "Not a valid cron expression"}
           </div>
         </div>
         <DialogFooter className="px-6 gap-2">
@@ -117,7 +117,7 @@ export default function SchedulerDialog(props: {
               variant={"secondary"}
               disabled={mutation.isPending}
               onClick={() => {
-                toast.loading("Saving ...", { id: cron });
+                toast.loading("Saving ...", { id: "cron" });
                 mutation.mutate({
                   id: props.workflowId,
                   cron,
