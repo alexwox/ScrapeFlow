@@ -30,21 +30,21 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useMutation } from "@tanstack/react-query";
-import { duplicateWorkflow } from "@/actions/workflows/duplicateWorkflow";
+import { DuplicateWorkflow } from "@/actions/workflows/duplicateWorkflow";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 export function DuplicateWorkflowDialog({
-  triggerText,
+  workflowId,
 }: {
-  triggerText?: string;
+  workflowId?: string;
 }) {
   const [open, setOpen] = useState(false);
 
   const form = useForm<duplicateWorkflowSchemaType>({
     resolver: zodResolver(duplicateWorkflowSchema),
     defaultValues: {
-      name: "",
-      description: "",
+      workflowId,
     },
   });
 
@@ -75,7 +75,15 @@ export function DuplicateWorkflowDialog({
       }}
     >
       <DialogTrigger asChild>
-        <Button> {"Duplicate Workflow"} </Button>
+        <Button
+          variant={"ghost"}
+          size={"icon"}
+          className={cn(
+            "ml-2 transition-opacity duration-200 opacity-0 group-hover/card:opacity-100"
+          )}
+        >
+          {"Duplicate Workflow"}{" "}
+        </Button>
       </DialogTrigger>
       <DialogContent className="px-0">
         <CustomDialogHeader icon={Layers2Icon} title="Duplicate Workflow" />
