@@ -10,7 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useCallback, useState } from "react";
 import CustomDialogHeader from "@/components/CustomDialogHeader";
-import { Layers2Icon, Loader2Icon } from "lucide-react";
+import { CopyIcon, Layers2Icon, Loader2Icon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -52,6 +52,7 @@ export function DuplicateWorkflowDialog({
     mutationFn: DuplicateWorkflow,
     onSuccess: () => {
       toast.success("Workflow duplicated", { id: "duplicate-workflow" });
+      setOpen((prev) => !prev);
     },
     onError: () => {
       toast.error("Failed to duplicate workflow", { id: "duplicate-workflow" });
@@ -82,7 +83,7 @@ export function DuplicateWorkflowDialog({
             "ml-2 transition-opacity duration-200 opacity-0 group-hover/card:opacity-100"
           )}
         >
-          {"Duplicate Workflow"}{" "}
+          <CopyIcon className="w-4 h-4 text-muted-foreground cursor-pointer" />
         </Button>
       </DialogTrigger>
       <DialogContent className="px-0">
