@@ -41,7 +41,7 @@ export async function RunWorkflow(form: {
 
   let executionPlan: WorkflowExecutionPlan;
   let workflowDefinition = flowDefinition;
-  if ((workflow.status = WorkflowStatus.PUBLISHED)) {
+  if (workflow.status === WorkflowStatus.PUBLISHED) {
     if (!workflow.executionPlan) {
       throw new Error("No executionplan found in published workflow");
     }
