@@ -10,7 +10,7 @@ export async function GetCredentialsForUser() {
     throw new Error("unauthorized");
   }
 
-  return prisma.credential.findMany({
+  return await prisma.credential.findMany({
     where: { userId },
     orderBy: {
       name: "asc",

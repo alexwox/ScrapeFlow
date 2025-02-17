@@ -13,11 +13,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-
-type OptionType = {
-  label: string;
-  value: string;
-};
+import { useQuery } from "@tanstack/react-query";
+import { GetCredentialsForUser } from "@/actions/credentials/getCredentialsForUser";
 
 export default function CredentialsParam({
   param,
@@ -25,6 +22,12 @@ export default function CredentialsParam({
   value,
 }: ParamProps) {
   const id = useId();
+
+  const query = useQuery({
+    queryKey: ["credentials-for-user"],
+    queryFn: () => GetCredentialsForUser(),
+    refetchInterval: 10000,
+  });
   return (
     <div className="flex flex-col gap-1 w-full">
       <Label htmlFor={id} className="text xs flex">
@@ -40,10 +43,10 @@ export default function CredentialsParam({
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            <SelectLabel>Options</SelectLabel>
-            {param.options.map((option: OptionType) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
+            <SelectLabel>Credentials</SelectLabel>
+            {query.data?.map((credential) => (
+              <SelectItem key={credential.id} value={credential.id}>
+                {credential.name}
               </SelectItem>
             ))}
           </SelectGroup>
