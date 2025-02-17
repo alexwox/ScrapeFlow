@@ -1,5 +1,6 @@
 "use server";
 
+import { symmetricEncrypt } from "@/lib/encryption";
 import { prisma } from "@/lib/prisma";
 import {
   createCredentialSchema,
@@ -22,7 +23,7 @@ export async function CreateCredential(form: createCredentialSchemaType) {
 
   // Encrypt the value
   const encryptedValue = symmetricEncrypt(data.value);
-  const result = prisma.credential.create({
+  const result = await prisma.credential.create({
     data: {
       userId,
       name: data.name,

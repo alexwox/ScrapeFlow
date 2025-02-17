@@ -1,23 +1,13 @@
 "use client";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useCallback, useState } from "react";
 import CustomDialogHeader from "@/components/CustomDialogHeader";
-import { Layers2Icon, Loader2Icon, ShieldEllipsis } from "lucide-react";
+import { Loader2Icon, ShieldEllipsis } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  createWorkflowSchema,
-  createWorkflowSchemaType,
-} from "@/schema/workflows";
-import { z } from "zod";
+
 import {
   Form,
   FormControl,
@@ -30,7 +20,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useMutation } from "@tanstack/react-query";
-import { createWorkflow } from "@/actions/workflows/createWorkflow";
 import { toast } from "sonner";
 import {
   createCredentialSchema,
@@ -53,6 +42,7 @@ export default function CreateCredentialDialog({
     mutationFn: CreateCredential,
     onSuccess: () => {
       toast.success("Credential created", { id: "create-credential" });
+      setOpen(false);
     },
     onError: () => {
       toast.error("Failed to create credential", { id: "create-credential" });

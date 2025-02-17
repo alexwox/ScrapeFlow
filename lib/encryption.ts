@@ -1,6 +1,7 @@
 import crypto from "crypto";
+import "server-only";
 
-const ALG = "aes_256-cbc"; // Key length is 32 bytes
+const ALG = "aes-256-cbc"; // Key length is 32 bytes
 
 //Generate using openssl rand -hex 32
 
