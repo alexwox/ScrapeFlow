@@ -30,7 +30,7 @@ export async function DeliverViaWebhookExecutor(
       return false;
     }
     const responseBody = await response.json();
-    environment.log.info(responseBody);
+    environment.log.info(JSON.stringify(responseBody, null, 4));
     return true;
   } catch (error: any) {
     environment.log.error(error.message);
