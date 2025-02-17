@@ -1,11 +1,19 @@
-import React from "react";
+import { GetPeriods } from "@/actions/analytics/getPeriods";
+import React, { Suspense } from "react";
+import PeriodSelector from "./_components/PeriodSelector";
 
 function HomePage() {
-  return <div>Hello World</div>;
+  return (
+    <div>
+      <Suspense>
+        <PeriodSelectorWrapper></PeriodSelectorWrapper>
+      </Suspense>
+    </div>
+  );
 }
 
 async function PeriodSelectorWrapper() {
-  const period = await GetPeriods();
-  return <pre className="">{JSON.stringify(period, null, 4)}</pre>;
+  const periods = await GetPeriods();
+  return <PeriodSelector periods={periods}></PeriodSelector>;
 }
 export default HomePage;
