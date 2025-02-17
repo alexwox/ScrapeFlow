@@ -9,6 +9,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const MONTH_NAMES = [
   "January",
@@ -25,9 +27,26 @@ const MONTH_NAMES = [
   "December",
 ] as const;
 
-function PeriodSelector({ periods }: { periods: Period[] }) {
+function PeriodSelector({
+  periods,
+  selectedPeriod,
+}: {
+  periods: Period[];
+  selectedPeriod: Period;
+}) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   return (
-    <Select>
+    <Select
+      value={`${selectedPeriod.month}-${selectedPeriod.year}`}
+      onValueChange={(value) => {
+        const [month, year] = value.split("-");
+        const params = new URLSearchParams(searchParams);
+        params.set("month", month);
+        params.set("year", year);
+        router.push(`?${params.toString()}`);
+      }}
+    >
       <SelectTrigger className="w-[180px]">
         <SelectValue />
       </SelectTrigger>
