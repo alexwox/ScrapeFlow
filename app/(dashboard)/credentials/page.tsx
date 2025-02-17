@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ShieldIcon, ShieldOffIcon } from "lucide-react";
 import React, { Suspense } from "react";
+import CreateCredentialDialog from "./_components/CreateCredentialDialog";
 
 function CredentialsPage() {
   return (
@@ -13,6 +14,7 @@ function CredentialsPage() {
           <h1 className="text-3xl font-bold">Credentials</h1>
           <p>Manage your credentials</p>
         </div>
+        <CreateCredentialDialog />
       </div>
       <div className="h-full py-6 space-y-8">
         <Alert>
@@ -53,6 +55,7 @@ async function UserCredentials() {
               Click the button bellow to create your first credential
             </p>
           </div>
+          <CreateCredentialDialog triggerText="Create your first credential" />
         </div>
       </Card>
     );
