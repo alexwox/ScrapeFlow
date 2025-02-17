@@ -1,10 +1,13 @@
 import { GetPeriods } from "@/actions/analytics/getPeriods";
-import React, { Suspense } from "react";
+import { Suspense } from "react";
 import PeriodSelector from "./_components/PeriodSelector";
 import { Period } from "@/types/analytics";
 import { Skeleton } from "@/components/ui/skeleton";
+import { waitFor } from "@/lib/helper/waitFor";
+import { GetStatsCardsValues } from "@/actions/analytics/getStatsCardsValues";
+import React from "react";
 
-function HomePage({
+export default function HomePage({
   searchParams,
 }: {
   searchParams: {
@@ -19,11 +22,16 @@ function HomePage({
     year: year ? parseInt(year) : currentDate.getFullYear(),
   };
   return (
-    <div>
-      {JSON.stringify(period)}
-      <Suspense fallback={<Skeleton className="w-[180px]" />}>
-        <PeriodSelectorWrapper selectedPeriod={period}></PeriodSelectorWrapper>
-      </Suspense>
+    <div className="flex flex-1 flex-col h-full">
+      <div className="flex justify-between">
+        <h1 className="text-3xl font-bold">Home</h1>
+        <Suspense fallback={<Skeleton className="w-[180px] h-[40px]" />}>
+          <PeriodSelectorWrapper
+            selectedPeriod={period}
+          ></PeriodSelectorWrapper>
+        </Suspense>
+      </div>
+      <StatsCards selectedPeriod={period} />
     </div>
   );
 }
@@ -41,4 +49,8 @@ async function PeriodSelectorWrapper({
     ></PeriodSelector>
   );
 }
-export default HomePage;
+
+async function StatsCards({ selectedPeriod }: { selectedPeriod: Period }) {
+  const data = await GetStatsCardsValues(selectedPeriod);
+  return <pre className="">{JSON.stringify(data, null, 4)}</pre>;
+}
