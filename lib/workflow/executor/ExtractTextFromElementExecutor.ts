@@ -17,7 +17,6 @@ export async function ExtractTextFromElementExecutor(
       environment.log.error("Html not defined");
       return false;
     }
-
     const $ = cheerio.load(html);
     const element = $(selector);
 
@@ -32,6 +31,7 @@ export async function ExtractTextFromElementExecutor(
       return false;
     }
 
+    environment.setOutput("Extracted Text", extractedText);
     return true;
   } catch (error: any) {
     environment.log.error(`Error in extraction: ${error.message}`);

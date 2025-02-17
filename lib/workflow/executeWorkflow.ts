@@ -229,6 +229,9 @@ async function executePhase(
   logCollector: LogCollector
 ): Promise<boolean> {
   const runFn = ExecutorRegistry[node.data.type];
+  if (process.env.NEXT_PUBLIC_DEV_MODE === "true" || undefined) {
+    await waitFor(1500);
+  }
   if (!runFn) {
     logCollector.error(`No executor found for task: ${node.data.type}`);
     return false;
