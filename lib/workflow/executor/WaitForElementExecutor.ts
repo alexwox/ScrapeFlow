@@ -1,11 +1,13 @@
 import { ExecutionEnvironment } from "@/types/executor";
 import { ClickElementTask } from "../task/ClickElement";
 import { WaitForElementTask } from "../task/WaitForElement";
+import { waitFor } from "@/lib/helper/waitFor";
 
 export async function WaitForElementExecutor(
   environment: ExecutionEnvironment<typeof WaitForElementTask>
 ): Promise<boolean> {
   try {
+    await waitFor(10);
     const selector = environment.getInput("Selector");
     if (!selector) {
       environment.log.error("input->selector not defined");

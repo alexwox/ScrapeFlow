@@ -65,7 +65,6 @@ export async function ExecuteWorkflow(executionId: string, nextRunAt?: Date) {
     executionFailed,
     creditsConsumed
   );
-
   await cleanupEnvironment(environment);
 
   revalidatePath("/workflows/runs");

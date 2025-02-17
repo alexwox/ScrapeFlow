@@ -24,8 +24,8 @@ export async function ExtractTextFromElementExecutor(
       environment.log.error(`No elements found matching selector: ${selector}`);
       return false;
     }
-
     const extractedText = $.text(element);
+
     if (!extractedText) {
       environment.log.error("Element has no text content");
       return false;
