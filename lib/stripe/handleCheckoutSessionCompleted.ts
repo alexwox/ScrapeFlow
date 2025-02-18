@@ -49,9 +49,13 @@ export async function HandleCheckoutSessionCompleted(
       });
 
       console.log("@@@BALANCE UPDATED:", balanceResult);
-    } catch (dbError) {
-      console.error("Database error during balance update:", dbError);
-      throw new Error(`Failed to update balance: ${dbError.message}`);
+    } catch (error) {
+      console.error("Database error during balance update:", error);
+      throw new Error(
+        `Failed to update balance: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`
+      );
     }
 
     console.log("@@@CREATING PURCHASE RECORD");
@@ -67,9 +71,13 @@ export async function HandleCheckoutSessionCompleted(
       });
 
       console.log("@@@PURCHASE RECORD CREATED:", purchaseResult);
-    } catch (dbError) {
-      console.error("Database error during purchase record creation:", dbError);
-      throw new Error(`Failed to create purchase record: ${dbError.message}`);
+    } catch (error) {
+      console.error("Database error during purchase record creation:", error);
+      throw new Error(
+        `Failed to create purchase record: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`
+      );
     }
 
     return { success: true };
