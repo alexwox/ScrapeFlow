@@ -1,5 +1,6 @@
 "use server";
 
+import { getAppUrl } from "@/lib/helper/appUrl";
 import { prisma } from "@/lib/prisma";
 import { ExecuteWorkflow } from "@/lib/workflow/executeWorkflow";
 import { FlowToExecutionPlan } from "@/lib/workflow/executionPlan";
@@ -97,6 +98,23 @@ export async function RunWorkflow(form: {
     throw new Error("workflow execution not created");
   }
 
-  ExecuteWorkflow(execution.id);
+  const triggerApiUrl = getAppUrl(
+    `api/workflows/execute?executionId=${execution.id}`
+  );
+
+  fetch(triggerApiUrl, {
+    headers: {
+      Authorization: `Bearer ${process.env.API_SECRET!}`,
+    },
+    cache: "no-store",
+    signal: AbortSignal.timeout(20000),
+  }).catch((error) =>
+    console.error(
+      "Error triggering workflow",
+      workflowId,
+      ":error->",
+      error.message
+    )
+  );
   redirect(`/workflow/runs/${workflowId}/${execution.id}`);
 }
