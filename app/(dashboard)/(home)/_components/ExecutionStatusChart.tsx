@@ -17,7 +17,13 @@ import {
 } from "@/components/ui/chart";
 import { Layers2Icon } from "lucide-react";
 import React from "react";
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  XAxis,
+  ResponsiveContainer,
+} from "recharts";
 
 type ChartData = Awaited<ReturnType<typeof GetWorkflowExecutionsStats>>;
 
@@ -45,50 +51,50 @@ function ExecutionStatusChart({ data }: { data: ChartData }) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className="max-h-[200px] w-full">
-          <AreaChart
-            data={data}
-            height={200}
-            accessibilityLayer
-            margin={{ top: 20 }}
-          >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey={"date"}
-              tickLine={false}
-              tickMargin={8}
-              minTickGap={32}
-              tickFormatter={(value) => {
-                const date = new Date(value);
-                return date.toLocaleString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                });
-              }}
-            />
-            <ChartLegend content={<ChartLegendContent />} />
-            <ChartTooltip
-              content={<ChartTooltipContent className="w-[250px]" />}
-            />
-            <Area
-              min={0}
-              type={"bump"}
-              fill="var(--color-success)"
-              stroke="var(--color-success)"
-              fillOpacity={0.6}
-              dataKey={"success"}
-              stackId={"a"}
-            />
-            <Area
-              min={0}
-              type={"bump"}
-              fill="var(--color-failed)"
-              stroke="var(--color-failed)"
-              fillOpacity={0.6}
-              dataKey={"failed"}
-              stackId={"a"}
-            />
-          </AreaChart>
+        <ChartContainer config={chartConfig} className="h-[200px] w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart
+              data={data}
+              margin={{ top: 20, right: 0, left: 0, bottom: 0 }}
+            >
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey={"date"}
+                tickLine={false}
+                tickMargin={8}
+                minTickGap={32}
+                tickFormatter={(value) => {
+                  const date = new Date(value);
+                  return date.toLocaleString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                  });
+                }}
+              />
+              <ChartLegend content={<ChartLegendContent />} />
+              <ChartTooltip
+                content={<ChartTooltipContent className="w-[250px]" />}
+              />
+              <Area
+                min={0}
+                type={"bump"}
+                fill="var(--color-success)"
+                stroke="var(--color-success)"
+                fillOpacity={0.6}
+                dataKey={"success"}
+                stackId={"a"}
+              />
+              <Area
+                min={0}
+                type={"bump"}
+                fill="var(--color-failed)"
+                stroke="var(--color-failed)"
+                fillOpacity={0.6}
+                dataKey={"failed"}
+                stackId={"a"}
+              />
+            </AreaChart>
+          </ResponsiveContainer>
         </ChartContainer>
       </CardContent>
     </Card>
