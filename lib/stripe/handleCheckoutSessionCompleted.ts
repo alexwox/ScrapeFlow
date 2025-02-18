@@ -7,6 +7,7 @@ import { prisma } from "../prisma";
 export async function HandleCheckoutSessionCompleted(
   event: Stripe.Checkout.Session
 ) {
+  console.log("@@ (in checkout handler) EVENT", event);
   if (!event.metadata) {
     throw new Error("missing metadata");
   }

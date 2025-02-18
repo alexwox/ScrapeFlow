@@ -57,7 +57,7 @@ function DesktopSidebar() {
             key={route.href}
             href={route.href}
             className={cn(
-              "my-3",
+              "my-1",
               buttonVariants({
                 variant:
                   activeRoute.href == route.href
@@ -103,7 +103,7 @@ export function MobileSidebar() {
                   key={route.href}
                   href={route.href}
                   className={cn(
-                    "my-3",
+                    "my-1",
                     buttonVariants({
                       variant:
                         activeRoute.href == route.href
