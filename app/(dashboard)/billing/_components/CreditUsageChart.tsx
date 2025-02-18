@@ -18,7 +18,15 @@ import {
 } from "@/components/ui/chart";
 import { ChartColumnStackedIcon, Layers2Icon } from "lucide-react";
 import React from "react";
-import { Area, AreaChart, Bar, BarChart, CartesianGrid, XAxis } from "recharts";
+import {
+  Area,
+  AreaChart,
+  Bar,
+  BarChart,
+  CartesianGrid,
+  XAxis,
+  ResponsiveContainer,
+} from "recharts";
 
 type ChartData = Awaited<ReturnType<typeof GetCreditsUsageInPeriod>>;
 
@@ -52,48 +60,49 @@ function CreditUsageChart({
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className="max-h-[200px] w-full">
-          <BarChart
-            data={data}
-            height={200}
-            accessibilityLayer
-            margin={{ top: 20 }}
-          >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey={"date"}
-              tickLine={false}
-              tickMargin={8}
-              minTickGap={32}
-              tickFormatter={(value) => {
-                const date = new Date(value);
-                return date.toLocaleString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                });
-              }}
-            />
-            <ChartLegend content={<ChartLegendContent />} />
-            <ChartTooltip
-              content={<ChartTooltipContent className="w-[250px]" />}
-            />
-            <Bar
-              fill="var(--color-success)"
-              radius={[0, 0, 4, 4]}
-              stroke="var(--color-success)"
-              fillOpacity={0.8}
-              dataKey={"success"}
-              stackId={"a"}
-            />
-            <Bar
-              fill="var(--color-failed)"
-              radius={[4, 4, 0, 0]}
-              stroke="var(--color-failed)"
-              fillOpacity={0.8}
-              dataKey={"failed"}
-              stackId={"a"}
-            />
-          </BarChart>
+        <ChartContainer config={chartConfig} className="h-[200px] w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart
+              data={data}
+              margin={{ top: 20, right: 0, left: 0, bottom: 0 }}
+              maxBarSize={40}
+            >
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey={"date"}
+                tickLine={false}
+                tickMargin={8}
+                minTickGap={32}
+                tickFormatter={(value) => {
+                  const date = new Date(value);
+                  return date.toLocaleString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                  });
+                }}
+              />
+              <ChartLegend content={<ChartLegendContent />} />
+              <ChartTooltip
+                content={<ChartTooltipContent className="w-[250px]" />}
+              />
+              <Bar
+                fill="var(--color-success)"
+                radius={[0, 0, 4, 4]}
+                stroke="var(--color-success)"
+                fillOpacity={0.8}
+                dataKey={"success"}
+                stackId={"a"}
+              />
+              <Bar
+                fill="var(--color-failed)"
+                radius={[4, 4, 0, 0]}
+                stroke="var(--color-failed)"
+                fillOpacity={0.8}
+                dataKey={"failed"}
+                stackId={"a"}
+              />
+            </BarChart>
+          </ResponsiveContainer>
         </ChartContainer>
       </CardContent>
     </Card>
