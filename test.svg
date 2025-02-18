@@ -1,0 +1,43 @@
+<svg
+  width="64"
+  height="64"
+  viewBox="0 0 64 64"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <!-- Define the gradient matching Tailwind’s emerald-500 to emerald-600 -->
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10B981" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+  </defs>
+
+  <!-- Outer rounded rectangle with gradient background (mimics the div) -->
+  <rect width="64" height="64" rx="12" fill="url(#grad)" />
+
+  <!-- Dashed square (simulate the SquareDashed part) -->
+  <rect
+    x="16"
+    y="16"
+    width="32"
+    height="32"
+    stroke="white"
+    stroke-width="2"
+    fill="none"
+    stroke-dasharray="4 2"
+  />
+
+  <!-- Mouse pointer arrow (simulate the MousePointer part) -->
+  <!-- Using a polyline similar to Feather's "cursor" icon -->
+  <g transform="translate(20,20)">
+    <polyline
+      points="3 2 21 12 12 22 3 2"
+      stroke="white"
+      stroke-width="2"
+      fill="none"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </g>
+</svg>
