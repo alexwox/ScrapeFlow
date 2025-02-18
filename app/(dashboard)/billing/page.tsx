@@ -1,11 +1,23 @@
 import { GetAvailableCredits } from "@/actions/billing/getAvailableCredits";
 import ReactCountUpWrapper from "@/components/ReactCountUpWrapper";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { waitFor } from "@/lib/helper/waitFor";
-import { CoinsIcon } from "lucide-react";
+import { ArrowLeftRightIcon, CoinsIcon } from "lucide-react";
 import { Suspense } from "react";
 import CreditsPurchase from "./_components/CreditsPurchase";
+import { Period } from "@/types/analytics";
+import { GetCreditsUsageInPeriod } from "@/actions/analytics/getCreditsUsageInPeriod";
+import CreditUsageChart from "./_components/CreditUsageChart";
+import { GetUserPurchaseHistory } from "@/actions/billing/getUserPurchaseHistory";
+import InvoiceBtn from "./_components/InvoiceBtn";
 
 export default function BillingPage() {
   return (
@@ -15,6 +27,12 @@ export default function BillingPage() {
         <BalanceCard />
       </Suspense>
       <CreditsPurchase />
+      <Suspense fallback={<Skeleton className="h-[300px] w-full" />}>
+        <CreditUsageCard />
+      </Suspense>
+      <Suspense fallback={<Skeleton className="h-[300px] w-full" />}>
+        <TransactionHistoryCard />
+      </Suspense>
     </div>
   );
 }
@@ -44,4 +62,77 @@ async function BalanceCard() {
       </CardFooter>
     </Card>
   );
+}
+
+async function CreditUsageCard() {
+  const period: Period = {
+    month: new Date().getMonth(),
+    year: new Date().getFullYear(),
+  };
+
+  const data = await GetCreditsUsageInPeriod(period);
+
+  return (
+    <CreditUsageChart
+      data={data}
+      title="Credits consumed"
+      description="Daily credits consumed in the current month"
+    />
+  );
+}
+
+async function TransactionHistoryCard() {
+  const purchases = await GetUserPurchaseHistory();
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-2xl font-bold flex items-center gap-2">
+          <ArrowLeftRightIcon className="h-6 w-6 text-primary" />
+          Transaction History
+        </CardTitle>
+        <CardDescription>
+          View transaction history and download invoices
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        {purchases.length === 0 && (
+          <p className="text-muted-foreground">No transactions yet</p>
+        )}
+        {purchases.map((purchase) => (
+          <div
+            className="flex justify-between items-center py-3 border-b last:border-b-0"
+            key={purchase.id}
+          >
+            <div className="">
+              <p className="font-medium">{formatDate(purchase.date)}</p>
+              <p className="text-sm text-muted-foreground">
+                {purchase.description}
+              </p>
+            </div>
+            <div className="text-right">
+              <p className="font-medium">
+                {formatAmount(purchase.amount, purchase.currency)}
+              </p>
+              <InvoiceBtn id={purchase.id} />
+            </div>
+          </div>
+        ))}
+      </CardContent>
+    </Card>
+  );
+}
+
+function formatDate(date: Date) {
+  return new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }).format(date);
+}
+
+function formatAmount(amount: number, currency: string) {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency,
+  }).format(amount / 100);
 }
