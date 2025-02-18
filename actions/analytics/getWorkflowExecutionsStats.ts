@@ -1,7 +1,7 @@
 "use server";
 
 import { PeriodToDateRange } from "@/lib/helper/dates";
-import { prisma } from "@/lib/prisma";
+import prisma from "@/lib/prisma";
 import { Period } from "@/types/analytics";
 import { WorkflowExecutionStatus } from "@/types/workflow";
 import { auth } from "@clerk/nextjs/server";

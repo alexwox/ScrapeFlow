@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
+import prisma from "@/lib/prisma";
 import { stripe } from "@/lib/stripe/stripe";
 import { auth } from "@clerk/nextjs/server";
 

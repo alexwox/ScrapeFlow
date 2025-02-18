@@ -1,7 +1,7 @@
 "use server";
 
 import { getAppUrl } from "@/lib/helper/appUrl";
-import { prisma } from "@/lib/prisma";
+import prisma from "@/lib/prisma";
 import { ExecuteWorkflow } from "@/lib/workflow/executeWorkflow";
 import { FlowToExecutionPlan } from "@/lib/workflow/executionPlan";
 import { TaskRegistry } from "@/lib/workflow/task/registry";
