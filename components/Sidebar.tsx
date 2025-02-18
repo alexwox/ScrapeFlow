@@ -14,6 +14,7 @@ import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { usePathname } from "next/navigation";
 import UserAvailableCreditsBadge from "./UserAvailableCreditsBadge";
+import { cn } from "@/lib/utils";
 
 const routes = [
   {
@@ -55,12 +56,15 @@ function DesktopSidebar() {
           <Link
             key={route.href}
             href={route.href}
-            className={buttonVariants({
-              variant:
-                activeRoute.href == route.href
-                  ? "sidebarItemActive"
-                  : "sidebarItem",
-            })}
+            className={cn(
+              "my-3",
+              buttonVariants({
+                variant:
+                  activeRoute.href == route.href
+                    ? "sidebarItemActive"
+                    : "sidebarItem",
+              })
+            )}
           >
             <route.icon size={20} />
             {route.label}
@@ -98,12 +102,15 @@ export function MobileSidebar() {
                 <Link
                   key={route.href}
                   href={route.href}
-                  className={buttonVariants({
-                    variant:
-                      activeRoute.href == route.href
-                        ? "sidebarItemActive"
-                        : "sidebarItem",
-                  })}
+                  className={cn(
+                    "my-3",
+                    buttonVariants({
+                      variant:
+                        activeRoute.href == route.href
+                          ? "sidebarItemActive"
+                          : "sidebarItem",
+                    })
+                  )}
                   onClick={() => setIsOpen((prev) => !prev)}
                 >
                   <route.icon size={20} />
