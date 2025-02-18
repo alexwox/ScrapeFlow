@@ -33,19 +33,24 @@ export async function HandleCheckoutSessionCompleted(
     });
 
     try {
-      const balanceResult = await prisma.userBalance.upsert({
-        where: {
-          userId,
-        },
-        create: {
-          userId,
-          credits: purchasedPack.credits,
-        },
-        update: {
-          credits: {
-            increment: purchasedPack.credits,
+      console.log("@@@Starting balance upsert...");
+      const balanceResult = await prisma.$transaction(async (tx) => {
+        const result = await tx.userBalance.upsert({
+          where: {
+            userId,
           },
-        },
+          create: {
+            userId,
+            credits: purchasedPack.credits,
+          },
+          update: {
+            credits: {
+              increment: purchasedPack.credits,
+            },
+          },
+        });
+        console.log("@@@Balance upsert completed within transaction");
+        return result;
       });
 
       console.log("@@@BALANCE UPDATED:", balanceResult);
@@ -60,14 +65,19 @@ export async function HandleCheckoutSessionCompleted(
 
     console.log("@@@CREATING PURCHASE RECORD");
     try {
-      const purchaseResult = await prisma.userPurchase.create({
-        data: {
-          userId,
-          stripeId: session.id,
-          description: `${purchasedPack.name} - ${purchasedPack.credits} credits`,
-          amount: session.amount_total!,
-          currency: session.currency!,
-        },
+      console.log("@@@Starting purchase record creation...");
+      const purchaseResult = await prisma.$transaction(async (tx) => {
+        const result = await tx.userPurchase.create({
+          data: {
+            userId,
+            stripeId: session.id,
+            description: `${purchasedPack.name} - ${purchasedPack.credits} credits`,
+            amount: session.amount_total!,
+            currency: session.currency!,
+          },
+        });
+        console.log("@@@Purchase record creation completed within transaction");
+        return result;
       });
 
       console.log("@@@PURCHASE RECORD CREATED:", purchaseResult);
