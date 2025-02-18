@@ -7,7 +7,7 @@ import { prisma } from "../prisma";
 export async function HandleCheckoutSessionCompleted(
   event: Stripe.Checkout.Session
 ) {
-  console.log("@@ (in checkout handler) EVENT", event);
+  console.log("@@@EVENT", event);
   if (!event.metadata) {
     throw new Error("missing metadata");
   }
@@ -22,7 +22,7 @@ export async function HandleCheckoutSessionCompleted(
   if (!purchasedPack) {
     throw new Error("Purchased pack not defined");
   }
-
+  console.log("@@@UPSERTING DB");
   await prisma.userBalance.upsert({
     where: {
       userId,
@@ -37,7 +37,7 @@ export async function HandleCheckoutSessionCompleted(
       },
     },
   });
-
+  console.log("@@@CREATING PURCHASE RECORD");
   await prisma.userPurchase.create({
     data: {
       userId,
