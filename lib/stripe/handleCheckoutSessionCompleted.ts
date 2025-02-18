@@ -32,35 +32,45 @@ export async function HandleCheckoutSessionCompleted(
       credits: purchasedPack.credits,
     });
 
-    const balanceResult = await prisma.userBalance.upsert({
-      where: {
-        userId,
-      },
-      create: {
-        userId,
-        credits: purchasedPack.credits,
-      },
-      update: {
-        credits: {
-          increment: purchasedPack.credits,
+    try {
+      const balanceResult = await prisma.userBalance.upsert({
+        where: {
+          userId,
         },
-      },
-    });
+        create: {
+          userId,
+          credits: purchasedPack.credits,
+        },
+        update: {
+          credits: {
+            increment: purchasedPack.credits,
+          },
+        },
+      });
 
-    console.log("@@@BALANCE UPDATED:", balanceResult);
+      console.log("@@@BALANCE UPDATED:", balanceResult);
+    } catch (dbError) {
+      console.error("Database error during balance update:", dbError);
+      throw new Error(`Failed to update balance: ${dbError.message}`);
+    }
 
     console.log("@@@CREATING PURCHASE RECORD");
-    const purchaseResult = await prisma.userPurchase.create({
-      data: {
-        userId,
-        stripeId: session.id,
-        description: `${purchasedPack.name} - ${purchasedPack.credits} - credits`,
-        amount: session.amount_total!,
-        currency: session.currency!,
-      },
-    });
+    try {
+      const purchaseResult = await prisma.userPurchase.create({
+        data: {
+          userId,
+          stripeId: session.id,
+          description: `${purchasedPack.name} - ${purchasedPack.credits} credits`,
+          amount: session.amount_total!,
+          currency: session.currency!,
+        },
+      });
 
-    console.log("@@@PURCHASE RECORD CREATED:", purchaseResult);
+      console.log("@@@PURCHASE RECORD CREATED:", purchaseResult);
+    } catch (dbError) {
+      console.error("Database error during purchase record creation:", dbError);
+      throw new Error(`Failed to create purchase record: ${dbError.message}`);
+    }
 
     return { success: true };
   } catch (error) {
