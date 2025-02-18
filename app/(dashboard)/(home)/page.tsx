@@ -6,6 +6,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { waitFor } from "@/lib/helper/waitFor";
 import { GetStatsCardsValues } from "@/actions/analytics/getStatsCardsValues";
 import React from "react";
+import { CirclePlayIcon, CoinsIcon, WaypointsIcon } from "lucide-react";
+import StatsCard from "./_components/StatsCard";
+import { GetWorkflowExecutionsStats } from "@/actions/analytics/getWorkflowExecutionsStats";
+import ExecutionStatusChart from "./_components/ExecutionStatusChart";
 
 export default function HomePage({
   searchParams,
@@ -31,7 +35,14 @@ export default function HomePage({
           ></PeriodSelectorWrapper>
         </Suspense>
       </div>
-      <StatsCards selectedPeriod={period} />
+      <div className="h-full py-6 flex flex-col gap-4">
+        <Suspense fallback={<StatsCardsSkeleton />}>
+          <StatsCards selectedPeriod={period} />
+        </Suspense>
+        <Suspense fallback={<Skeleton className="w-full h-[300px]" />}>
+          <StatsExecutionsStatus selectedPeriod={period} />
+        </Suspense>
+      </div>
     </div>
   );
 }
@@ -52,5 +63,42 @@ async function PeriodSelectorWrapper({
 
 async function StatsCards({ selectedPeriod }: { selectedPeriod: Period }) {
   const data = await GetStatsCardsValues(selectedPeriod);
-  return <pre className="">{JSON.stringify(data, null, 4)}</pre>;
+  return (
+    <div className=" grid gap-3 lg:gap-8 lg:grid-cols-3 min-h-[120px]">
+      <StatsCard
+        title="Workflow executions"
+        value={data.workflowExecutions}
+        icon={CirclePlayIcon}
+      />
+      <StatsCard
+        title="Phase executions"
+        value={data.phaseExecutions}
+        icon={WaypointsIcon}
+      />
+      <StatsCard
+        title="Credits consumed"
+        value={data.creditsConsumed}
+        icon={CoinsIcon}
+      />
+    </div>
+  );
+}
+
+function StatsCardsSkeleton() {
+  return (
+    <div className="grid gap-3 lg:gap-8 lg:grid-cols-3">
+      {[1, 2, 3].map((i) => (
+        <Skeleton key={i} className="w-full min-h-[120px]" />
+      ))}
+    </div>
+  );
+}
+
+async function StatsExecutionsStatus({
+  selectedPeriod,
+}: {
+  selectedPeriod: Period;
+}) {
+  const data = await GetWorkflowExecutionsStats(selectedPeriod);
+  return <ExecutionStatusChart data={data} />;
 }
