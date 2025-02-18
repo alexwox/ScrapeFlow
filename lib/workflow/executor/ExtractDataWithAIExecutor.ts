@@ -1,7 +1,7 @@
 import { ExecutionEnvironment } from "@/types/executor";
 import { ClickElementTask } from "../task/ClickElement";
 import { ExtractDataWithAITask } from "../task/ExtractDataWithAI";
-import { prisma } from "@/lib/prisma";
+import prisma from "@/lib/prisma";
 import { symmetricDecrypt } from "@/lib/encryption";
 import OpenAI from "openai";
 
