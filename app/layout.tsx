@@ -22,7 +22,7 @@ export default function RootLayout({
         className={`${inter.className} min-h-screen bg-background text-foreground`}
       >
         <ClerkProvider
-          afterSignOutUrl="/sign-in"
+          afterSignOutUrl="/"
           appearance={{
             elements: {
               formButtonPrimary:
