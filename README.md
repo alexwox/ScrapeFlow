@@ -11,7 +11,7 @@ Next.JS, TypeScript, Prisma ORM, OpenAI SDK, React-flow, React-query amongst oth
 
 Random docs below //Need to fix
 
-**To create a new task:**
+**To create a new task as dev:**
 
 1. Create the task type: /types/task/
 2. Create the task file: /lib/workflow/task/
