@@ -65,7 +65,7 @@ function LandingPage() {
               </div>
               <div className="space-x-4">
                 <SignInButton>
-                  <Button>Get Started</Button>
+                  <Button>Get started with 100 credits for Free</Button>
                 </SignInButton>
                 <Link href="#features">
                   <Button variant="outline">Learn More</Button>
