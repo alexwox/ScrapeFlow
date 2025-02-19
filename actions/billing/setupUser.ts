@@ -27,5 +27,5 @@ export async function SetupUser() {
     });
   }
 
-  redirect("/");
+  redirect("/home");
 }
